@@ -4,29 +4,13 @@ CREATE OR REPLACE FUNCTION core.cft_table_state_change_version() RETURNS trigger
 DECLARE
 	_users json;
 BEGIN
-	if TG_TABLE_NAME = 'pd_users' then
-		select concat('[{"f_user":', NEW.id::text, '}]')::json into _users;
-	else 
-		if TG_TABLE_NAME = 'cd_points' then
-			select (select json_agg(t) from (select f_user from core.cd_userinroutes as uir where uir.f_route = (case when TG_OP = 'DELETE' then OLD.f_route else NEW.f_route end)) as t) into _users;
+	if TG_OP = 'DELETE' and to_jsonb(OLD) ? 'fn_user' then
+		select concat('[{"f_user":', OLD.fn_user::text ,'}]')::json into _users;
+	else
+		if TG_OP != 'DELETE' and to_jsonb(NEW) ? 'fn_user' then
+			select concat('[{"f_user":', NEW.fn_user::text ,'}]')::json into _users;
 		else
-			if TG_TABLE_NAME = 'cd_routes' then
-				select (select json_agg(t) from (select f_user from core.cd_userinroutes as uir where uir.f_route = (case when TG_OP = 'DELETE' then OLD.id else NEW.id end)) as t) into _users;
-			else
-				if TG_TABLE_NAME = 'cd_route_history' then
-					select (select json_agg(t) from (select f_user from core.cd_userinroutes as uir where uir.f_route = (case when TG_OP = 'DELETE' then OLD.fn_route else NEW.fn_route end)) as t) into _users;
-				else	
-					if TG_OP = 'DELETE' and to_jsonb(OLD) ? 'fn_user' then
-						select concat('[{"f_user":', OLD.fn_user::text ,'}]')::json into _users;
-					else
-						if TG_OP != 'DELETE' and to_jsonb(NEW) ? 'fn_user' then
-							select concat('[{"f_user":', NEW.fn_user::text ,'}]')::json into _users;
-						else
-							select '[{"f_user":null}]'::json into _users;
-						end if;
-					end if;
-				end if;
-			end if;
+			select '[{"f_user":null}]'::json into _users;
 		end if;
 	end if;
 			

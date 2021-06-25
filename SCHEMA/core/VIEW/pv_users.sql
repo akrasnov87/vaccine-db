@@ -9,7 +9,6 @@ CREATE VIEW core.pv_users AS
                   ORDER BY r.n_weight DESC) t), '.') AS c_claims,
     u.c_description,
     u.c_first_name,
-    u.c_phone,
     u.c_email,
     u.b_disabled
    FROM core.pd_users u

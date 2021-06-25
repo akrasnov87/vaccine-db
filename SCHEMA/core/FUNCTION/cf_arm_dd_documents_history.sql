@@ -18,4 +18,4 @@ $$;
 
 ALTER FUNCTION core.cf_arm_dd_documents_history(_id uuid) OWNER TO mobnius;
 
-COMMENT ON FUNCTION core.cf_arm_dd_documents_history(_id uuid) IS 'История изменнения документа';
+COMMENT ON FUNCTION core.cf_arm_dd_documents_history(_id uuid) IS 'История изменения документа';

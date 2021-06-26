@@ -9,27 +9,6 @@ CREATE OR REPLACE FUNCTION rpt.cf_rpt_user(_f_user integer) RETURNS TABLE(f_docu
 */
 BEGIN
 	return query
-	with items as (
-		select 
-			i.f_user, 
-			i.f_document, 
-			sum(i.n_jpg) as n_jpg, 
-			sum(i.n_pdf) as n_pdf,
-			max(i.dx_created) as dx_created
-		from (select
-				d.id as f_document,
-				u.id as f_user,
-				u.c_first_name,
-				case when f.ba_jpg is null then 0 else 1 end as n_jpg,
-				case when f.ba_pdf is null then 0 else 1 end as n_pdf,
-				f.dx_created,
-				row_number() over(partition by d.id order by f.dx_created desc) as n_row
-			from core.dd_documents as d 
-			inner join core.pd_users as u on u.id = d.f_user
-			inner join core.dd_files as f on d.id = f.f_document
-			where u.b_disabled = false and u.sn_delete = false and d.sn_delete = false) as i 
-		group by i.f_user, i.f_document 
-		having sum(i.n_pdf) > 0 or sum(i.n_jpg) > 0)
 	select
 		d.id,
 		d.f_user,
@@ -39,8 +18,10 @@ BEGIN
 		case when i.n_pdf > 0 then i.dx_created else null end as d_pdf_date,
 		case when i.n_jpg > 0 then 1 else 0 end as n_jpg,
 		case when i.n_jpg > 0 then i.dx_created else null end as d_jpg_date
-	from items as i
-	inner join core.dd_documents as d on d.id = i.f_document;
+	from rpt.vw_stats as i
+	inner join core.dd_documents as d on d.id = i.f_document
+	where case when _f_user is null then true else i.f_user = _f_user end
+	order by i.dx_created;
 END
 $$;
 

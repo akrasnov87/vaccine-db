@@ -16,3 +16,8 @@ COMMENT ON COLUMN core.dd_files.ba_pdf IS 'PDF';
 
 ALTER TABLE core.dd_files
 	ADD CONSTRAINT dd_files_pkey PRIMARY KEY (id);
+
+--------------------------------------------------------------------------------
+
+ALTER TABLE core.dd_files
+	ADD CONSTRAINT dd_files_f_document_fkey FOREIGN KEY (f_document) REFERENCES core.dd_documents(id) NOT VALID;

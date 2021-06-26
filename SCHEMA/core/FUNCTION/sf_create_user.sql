@@ -1,26 +1,27 @@
-CREATE OR REPLACE FUNCTION core.sf_create_user(_login text, _password text, _claims text, _f_subdivision integer) RETURNS integer
+CREATE OR REPLACE FUNCTION core.sf_create_user(_login text, _c_first_name text, _password text, _claims text, _c_description text) RETURNS integer
     LANGUAGE plpgsql
     AS $$
 /**
  * @params {text} _login - логин
+ * @params {text} _c_first_name - Наименование
  * @params {text} _password - пароль
  * @params {text} _claims - роли,  в формате JSON, например ["admin", "master"]
- * @params {integer} _f_subdivision - округ
+ * @params {text} _c_description - примечание
  * 
  * @returns {integer} - иден. пользователя
  */
 DECLARE
 	_userId integer;
 BEGIN
-	insert into core.pd_users(c_login, c_password, f_subdivision)
-	values (_login, _password, _f_subdivision) RETURNING id INTO _userId;
+	insert into core.pd_users(c_login, c_password, c_first_name, c_description)
+	values (_login, _password, _c_first_name, _c_description) RETURNING id INTO _userId;
 	
-	perform dbo.pf_update_user_roles(_userId, _claims);
+	perform core.pf_update_user_roles(_userId, _claims::json);
 	
 	RETURN _userId;
 END
 $$;
 
-ALTER FUNCTION core.sf_create_user(_login text, _password text, _claims text, _f_subdivision integer) OWNER TO mobnius;
+ALTER FUNCTION core.sf_create_user(_login text, _c_first_name text, _password text, _claims text, _c_description text) OWNER TO mobnius;
 
-COMMENT ON FUNCTION core.sf_create_user(_login text, _password text, _claims text, _f_subdivision integer) IS 'Создание пользователя с определенными ролями';
+COMMENT ON FUNCTION core.sf_create_user(_login text, _c_first_name text, _password text, _claims text, _c_description text) IS 'Создание пользователя с определенными ролями';

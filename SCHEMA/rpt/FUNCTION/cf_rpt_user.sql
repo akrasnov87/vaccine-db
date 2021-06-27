@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_user(_f_user integer) RETURNS TABLE(f_document uuid, f_user integer, c_name text, d_birthday date, n_pdf integer, d_pdf_date timestamp with time zone, n_jpg integer, d_jpg_date timestamp with time zone)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_user(_f_user integer) RETURNS TABLE(f_document uuid, f_user integer, c_name text, d_birthday date, n_pdf integer, n_pdf_count bigint, d_pdf_date timestamp with time zone, n_jpg integer, n_jpg_count bigint, d_jpg_date timestamp with time zone, b_ignore boolean)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -15,13 +15,16 @@ BEGIN
 		concat(d.c_first_name, ' ', d.c_last_name, ' ', d.c_middle_name) as c_name,
 		d.d_birthday,
 		case when i.n_pdf > 0 then 1 else 0 end as n_pdf,
+		i.n_pdf,
 		case when i.n_pdf > 0 then i.dx_created else null end as d_pdf_date,
 		case when i.n_jpg > 0 then 1 else 0 end as n_jpg,
-		case when i.n_jpg > 0 then i.dx_created else null end as d_jpg_date
+		i.n_jpg,
+		case when i.n_jpg > 0 then i.dx_created else null end as d_jpg_date,
+		i.b_ignore
 	from rpt.vw_stat as i
 	inner join core.dd_documents as d on d.id = i.f_document
 	where case when _f_user is null then true else i.f_user = _f_user end
-	order by i.dx_created;
+	order by i.dx_created, d.c_first_name, d.c_last_name, d.c_middle_name;
 END
 $$;
 

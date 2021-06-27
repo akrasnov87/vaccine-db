@@ -1,14 +1,15 @@
 CREATE TABLE core.dd_documents (
 	id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-	c_first_name text not null,
-	c_last_name text not null,
-	c_middle_name text not null,
-	d_birthday date NULL,
+	c_first_name text NOT NULL,
+	c_last_name text NOT NULL,
+	c_middle_name text NOT NULL,
+	d_birthday date,
 	c_notice text,
 	f_user integer NOT NULL,
 	c_tag text,
 	sn_delete boolean NOT NULL,
-	dx_created timestamp with time zone DEFAULT now()
+	dx_created timestamp with time zone DEFAULT now(),
+	b_ignore boolean NOT NULL
 );
 
 ALTER TABLE core.dd_documents OWNER TO mobnius;
@@ -23,11 +24,11 @@ COMMENT ON COLUMN core.dd_documents.c_middle_name IS 'Отчество';
 
 COMMENT ON COLUMN core.dd_documents.d_birthday IS 'Дата рождения';
 
-COMMENT ON COLUMN core.dd_documents.dx_created IS 'Дата создания';
-
 COMMENT ON COLUMN core.dd_documents.c_notice IS 'Примечание';
 
 COMMENT ON COLUMN core.dd_documents.f_user IS 'Идентификатор муниципалитета';
+
+COMMENT ON COLUMN core.dd_documents.dx_created IS 'Дата создания';
 
 --------------------------------------------------------------------------------
 

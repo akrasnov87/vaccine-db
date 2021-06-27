@@ -3,7 +3,8 @@ CREATE VIEW rpt.vw_stat AS
     i.f_document,
     sum(i.n_jpg) AS n_jpg,
     sum(i.n_pdf) AS n_pdf,
-    max(i.dx_created) AS dx_created
+    max(i.dx_created) AS dx_created,
+    (max(i.b_ignore) = 1) AS b_ignore
    FROM ( SELECT d.id AS f_document,
             u.id AS f_user,
             u.c_first_name,
@@ -16,7 +17,11 @@ CREATE VIEW rpt.vw_stat AS
                     ELSE 1
                 END AS n_pdf,
             f.dx_created,
-            row_number() OVER (PARTITION BY d.id ORDER BY f.dx_created DESC) AS n_row
+            row_number() OVER (PARTITION BY d.id ORDER BY f.dx_created DESC) AS n_row,
+                CASE
+                    WHEN d.b_ignore THEN 1
+                    ELSE 0
+                END AS b_ignore
            FROM ((core.dd_documents d
              JOIN core.pd_users u ON ((u.id = d.f_user)))
              JOIN core.dd_files f ON ((d.id = f.f_document)))

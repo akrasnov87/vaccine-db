@@ -12,8 +12,8 @@ BEGIN
 	select 
 		u.id,
 		u.c_first_name, 
-		(select count(*) from rpt.vw_stats as i where i.f_user = u.id and i.n_pdf > 0) as n_vaccine,
-		(select count(*) from rpt.vw_stats as i where i.f_user = u.id and i.n_jpg > 0) as n_pcr
+		(select count(*) from rpt.vw_stat as i where i.f_user = u.id and i.n_pdf > 0) as n_vaccine,
+		(select count(*) from rpt.vw_stat as i where i.f_user = u.id and i.n_jpg > 0) as n_pcr
 	from core.pd_userinroles as uir
 	inner join core.pd_roles as r on r.id = uir.f_role
 	inner join core.pd_users as u on u.id = uir.f_user

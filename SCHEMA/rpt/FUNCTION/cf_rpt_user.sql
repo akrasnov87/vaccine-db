@@ -18,7 +18,7 @@ BEGIN
 		case when i.n_pdf > 0 then i.dx_created else null end as d_pdf_date,
 		case when i.n_jpg > 0 then 1 else 0 end as n_jpg,
 		case when i.n_jpg > 0 then i.dx_created else null end as d_jpg_date
-	from rpt.vw_stats as i
+	from rpt.vw_stat as i
 	inner join core.dd_documents as d on d.id = i.f_document
 	where case when _f_user is null then true else i.f_user = _f_user end
 	order by i.dx_created;

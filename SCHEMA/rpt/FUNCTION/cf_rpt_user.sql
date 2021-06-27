@@ -14,12 +14,12 @@ BEGIN
 		d.f_user,
 		concat(d.c_first_name, ' ', d.c_last_name, ' ', d.c_middle_name) as c_name,
 		d.d_birthday,
-		case when i.n_pdf > 0 then 1 else 0 end as n_pdf,
-		i.n_pdf,
-		case when i.n_pdf > 0 then i.dx_created else null end as d_pdf_date,
-		case when i.n_jpg > 0 then 1 else 0 end as n_jpg,
-		i.n_jpg,
-		case when i.n_jpg > 0 then i.dx_created else null end as d_jpg_date,
+		case when i.b_ignore then null else case when i.n_pdf > 0 then 1 else 0 end end as n_pdf,
+		case when i.b_ignore then null else i.n_pdf end as n_pdf,
+		case when i.b_ignore then null else case when i.n_pdf > 0 then i.dx_created else null end end as d_pdf_date,
+		case when i.b_ignore then null else case when i.n_jpg > 0 then 1 else 0 end end as n_jpg,
+		case when i.b_ignore then null else i.n_jpg end n_jpg,
+		case when i.b_ignore then null else case when i.n_jpg > 0 then i.dx_created else null end end as d_jpg_date,
 		i.b_ignore
 	from rpt.vw_stat as i
 	inner join core.dd_documents as d on d.id = i.f_document

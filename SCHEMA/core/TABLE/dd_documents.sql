@@ -32,6 +32,10 @@ COMMENT ON COLUMN core.dd_documents.dx_created IS 'Дата создания';
 
 --------------------------------------------------------------------------------
 
+CREATE INDEX dd_documents_f_user_idx ON core.dd_documents USING btree (f_user);
+
+--------------------------------------------------------------------------------
+
 CREATE TRIGGER dd_documents_1
 	BEFORE INSERT OR UPDATE OR DELETE ON core.dd_documents
 	FOR EACH ROW

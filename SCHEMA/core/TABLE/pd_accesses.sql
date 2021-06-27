@@ -70,8 +70,3 @@ ALTER TABLE core.pd_accesses
 
 ALTER TABLE core.pd_accesses
 	ADD CONSTRAINT pd_accesses_f_role FOREIGN KEY (f_role) REFERENCES core.pd_roles(id);
-
---------------------------------------------------------------------------------
-
-ALTER TABLE core.pd_accesses
-	ADD CONSTRAINT pd_accesses_f_user FOREIGN KEY (f_user) REFERENCES core.pd_users(id);

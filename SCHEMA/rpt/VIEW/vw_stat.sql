@@ -4,6 +4,7 @@ CREATE VIEW rpt.vw_stat AS
     sum(i.n_jpg) AS n_jpg,
     sum(i.n_pdf) AS n_pdf,
     max(i.dx_created) AS dx_created,
+    ((now())::date - (max(i.dx_created))::date) AS n_day,
     (max(i.b_ignore) = 1) AS b_ignore
    FROM ( SELECT d.id AS f_document,
             u.id AS f_user,
@@ -24,10 +25,9 @@ CREATE VIEW rpt.vw_stat AS
                 END AS b_ignore
            FROM ((core.dd_documents d
              JOIN core.pd_users u ON ((u.id = d.f_user)))
-             JOIN core.dd_files f ON ((d.id = f.f_document)))
+             LEFT JOIN core.dd_files f ON (((d.id = f.f_document) AND (f.sn_delete = false))))
           WHERE ((u.b_disabled = false) AND (u.sn_delete = false) AND (d.sn_delete = false))) i
   GROUP BY i.f_user, i.f_document
- HAVING ((sum(i.n_pdf) > 0) OR (sum(i.n_jpg) > 0))
   ORDER BY (max(i.dx_created));
 
 ALTER VIEW rpt.vw_stat OWNER TO mobnius;

@@ -37,6 +37,10 @@ COMMENT ON COLUMN core.pd_users.c_email IS 'Эл. почта';
 
 --------------------------------------------------------------------------------
 
+CREATE INDEX pd_users_b_disabled_sn_delete_idx ON core.pd_users USING btree (b_disabled, sn_delete);
+
+--------------------------------------------------------------------------------
+
 CREATE TRIGGER pd_users_1
 	BEFORE INSERT OR UPDATE OR DELETE ON core.pd_users
 	FOR EACH ROW

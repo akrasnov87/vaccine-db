@@ -5,7 +5,8 @@ CREATE VIEW rpt.vw_stat AS
     sum(i.n_pdf) AS n_pdf,
     max(i.dx_created) AS dx_created,
     ((now())::date - (max(i.dx_created))::date) AS n_day,
-    (max(i.b_ignore) = 1) AS b_ignore
+    (max(i.b_ignore) = 1) AS b_ignore,
+    (max(i.b_verify) = 1) AS b_verify
    FROM ( SELECT d.id AS f_document,
             u.id AS f_user,
             u.c_first_name,
@@ -22,7 +23,11 @@ CREATE VIEW rpt.vw_stat AS
                 CASE
                     WHEN d.b_ignore THEN 1
                     ELSE 0
-                END AS b_ignore
+                END AS b_ignore,
+                CASE
+                    WHEN f.b_verify THEN 1
+                    ELSE 0
+                END AS b_verify
            FROM ((core.dd_documents d
              JOIN core.pd_users u ON ((u.id = d.f_user)))
              LEFT JOIN core.dd_files f ON (((d.id = f.f_document) AND (f.sn_delete = false))))

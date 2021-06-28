@@ -8,7 +8,8 @@ CREATE TABLE core.pd_users (
 	c_description text,
 	b_disabled boolean DEFAULT false NOT NULL,
 	sn_delete boolean DEFAULT false NOT NULL,
-	c_email text
+	c_email text,
+	n_count integer DEFAULT 0
 );
 
 ALTER TABLE core.pd_users OWNER TO mobnius;

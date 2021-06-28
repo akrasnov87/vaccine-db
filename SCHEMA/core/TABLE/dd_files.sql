@@ -4,7 +4,8 @@ CREATE TABLE core.dd_files (
 	ba_pdf bytea,
 	f_document uuid NOT NULL,
 	dx_created timestamp with time zone DEFAULT now() NOT NULL,
-	sn_delete boolean DEFAULT false
+	sn_delete boolean DEFAULT false,
+	b_verify boolean DEFAULT false
 );
 
 ALTER TABLE core.dd_files OWNER TO mobnius;

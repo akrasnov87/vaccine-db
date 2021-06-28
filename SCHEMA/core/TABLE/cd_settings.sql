@@ -10,7 +10,7 @@ CREATE TABLE core.cd_settings (
 	f_role integer
 );
 
-ALTER TABLE core.cd_settings OWNER TO mobnius;
+ALTER TABLE core.cd_settings OWNER TO vaccine;
 
 COMMENT ON TABLE core.cd_settings IS 'Настройки';
 
@@ -25,7 +25,6 @@ COMMENT ON COLUMN core.cd_settings.f_type IS 'Тип';
 COMMENT ON COLUMN core.cd_settings.c_label IS 'Заголовок';
 
 COMMENT ON COLUMN core.cd_settings.c_summary IS 'Краткое описание';
-
 
 COMMENT ON COLUMN core.cd_settings.f_user IS 'Пользователь';
 

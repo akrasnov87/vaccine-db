@@ -35,4 +35,4 @@ CREATE VIEW rpt.vw_stat AS
   GROUP BY i.f_user, i.f_document
   ORDER BY (max(i.dx_created));
 
-ALTER VIEW rpt.vw_stat OWNER TO mobnius;
+ALTER VIEW rpt.vw_stat OWNER TO vaccine;

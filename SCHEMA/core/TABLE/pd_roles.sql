@@ -6,7 +6,7 @@ CREATE TABLE core.pd_roles (
 	sn_delete boolean DEFAULT false NOT NULL
 );
 
-ALTER TABLE core.pd_roles OWNER TO mobnius;
+ALTER TABLE core.pd_roles OWNER TO vaccine;
 
 COMMENT ON TABLE core.pd_roles IS 'Роли';
 

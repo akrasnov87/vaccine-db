@@ -24,6 +24,6 @@ BEGIN
 END; 
 $$;
 
-ALTER FUNCTION core.pf_accesses(n_user_id integer) OWNER TO mobnius;
+ALTER FUNCTION core.pf_accesses(n_user_id integer) OWNER TO vaccine;
 
-COMMENT ON FUNCTION core.pf_accesses(n_user_id integer) IS 'Системная функция. Получение прав доступа для пользователя. Используется NodeJS';
+COMMENT ON FUNCTION core.pf_accesses(n_user_id integer) IS 'Системная функция. Получение прав доступа для пользователя. Используется vaccineJS';

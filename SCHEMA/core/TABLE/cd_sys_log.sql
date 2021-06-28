@@ -5,7 +5,7 @@ CREATE TABLE core.cd_sys_log (
 	c_descr text
 );
 
-ALTER TABLE core.cd_sys_log OWNER TO mobnius;
+ALTER TABLE core.cd_sys_log OWNER TO vaccine;
 
 COMMENT ON TABLE core.cd_sys_log IS ' Логирование job';
 

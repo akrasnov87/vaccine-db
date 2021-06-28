@@ -9,7 +9,7 @@ CREATE TABLE core.cd_action_log_user (
 	jb_data jsonb NOT NULL
 );
 
-ALTER TABLE core.cd_action_log_user OWNER TO mobnius;
+ALTER TABLE core.cd_action_log_user OWNER TO vaccine;
 
 COMMENT ON TABLE core.cd_action_log_user IS 'Логирование запросов пользователя';
 

@@ -5,4 +5,4 @@ CREATE SEQUENCE core.auto_id_pd_accesses
 	NO MINVALUE
 	CACHE 1;
 
-ALTER SEQUENCE core.auto_id_pd_accesses OWNER TO mobnius;
+ALTER SEQUENCE core.auto_id_pd_accesses OWNER TO vaccine;

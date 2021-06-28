@@ -5,4 +5,4 @@ CREATE SEQUENCE core.auto_id_cd_settings
 	NO MINVALUE
 	CACHE 1;
 
-ALTER SEQUENCE core.auto_id_cd_settings OWNER TO mobnius;
+ALTER SEQUENCE core.auto_id_cd_settings OWNER TO vaccine;

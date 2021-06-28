@@ -5,7 +5,7 @@ CREATE SEQUENCE core.sd_table_change_id_seq
 	NO MINVALUE
 	CACHE 1;
 
-ALTER SEQUENCE core.sd_table_change_id_seq OWNER TO mobnius;
+ALTER SEQUENCE core.sd_table_change_id_seq OWNER TO vaccine;
 
 ALTER SEQUENCE core.sd_table_change_id_seq
 	OWNED BY core.sd_table_change.id;

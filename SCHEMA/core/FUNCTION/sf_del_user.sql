@@ -12,6 +12,6 @@ BEGIN
 END
 $$;
 
-ALTER FUNCTION core.sf_del_user(_id integer) OWNER TO mobnius;
+ALTER FUNCTION core.sf_del_user(_id integer) OWNER TO vaccine;
 
 COMMENT ON FUNCTION core.sf_del_user(_id integer) IS 'Удаление пользователя';

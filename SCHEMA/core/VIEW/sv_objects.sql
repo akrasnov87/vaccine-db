@@ -41,4 +41,4 @@ CREATE VIEW core.sv_objects AS
           WHERE ((r.routine_catalog)::text = (current_database())::text)) table1
   WHERE (((table1.table_schema)::text <> 'pg_catalog'::text) AND ((table1.table_schema)::text <> 'information_schema'::text) AND ((table1.table_schema)::text <> 'public'::text));
 
-ALTER VIEW core.sv_objects OWNER TO mobnius;
+ALTER VIEW core.sv_objects OWNER TO vaccine;

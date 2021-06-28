@@ -4,7 +4,7 @@ CREATE TABLE core.sd_table_change_ref (
 	c_table_name_ref text NOT NULL
 );
 
-ALTER TABLE core.sd_table_change_ref OWNER TO mobnius;
+ALTER TABLE core.sd_table_change_ref OWNER TO vaccine;
 
 COMMENT ON TABLE core.sd_table_change_ref IS 'Зависимость таблиц состояний';
 

@@ -12,7 +12,7 @@ CREATE TABLE core.pd_users (
 	n_count integer DEFAULT 0
 );
 
-ALTER TABLE core.pd_users OWNER TO mobnius;
+ALTER TABLE core.pd_users OWNER TO vaccine;
 
 COMMENT ON TABLE core.pd_users IS 'Пользователи';
 

@@ -12,7 +12,7 @@ CREATE TABLE core.dd_documents (
 	b_ignore boolean NOT NULL
 );
 
-ALTER TABLE core.dd_documents OWNER TO mobnius;
+ALTER TABLE core.dd_documents OWNER TO vaccine;
 
 COMMENT ON COLUMN core.dd_documents.id IS 'Идентификатор';
 

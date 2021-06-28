@@ -24,6 +24,6 @@ BEGIN
 END
 $$;
 
-ALTER FUNCTION core.cf_arm_dd_documents_search(_txt text) OWNER TO mobnius;
+ALTER FUNCTION core.cf_arm_dd_documents_search(_txt text) OWNER TO vaccine;
 
 COMMENT ON FUNCTION core.cf_arm_dd_documents_search(_txt text) IS 'Поиск документа';

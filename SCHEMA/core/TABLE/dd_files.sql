@@ -8,7 +8,7 @@ CREATE TABLE core.dd_files (
 	b_verify boolean DEFAULT false
 );
 
-ALTER TABLE core.dd_files OWNER TO mobnius;
+ALTER TABLE core.dd_files OWNER TO vaccine;
 
 COMMENT ON COLUMN core.dd_files.ba_jpg IS 'Фото ПЦР';
 

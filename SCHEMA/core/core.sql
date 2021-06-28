@@ -1,3 +1,3 @@
 CREATE SCHEMA core;
 
-ALTER SCHEMA core OWNER TO mobnius;
+ALTER SCHEMA core OWNER TO vaccine;

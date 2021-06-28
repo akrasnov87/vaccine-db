@@ -9,7 +9,7 @@ CREATE TABLE core.cs_setting_types (
 	b_disabled boolean DEFAULT false NOT NULL
 );
 
-ALTER TABLE core.cs_setting_types OWNER TO mobnius;
+ALTER TABLE core.cs_setting_types OWNER TO vaccine;
 
 COMMENT ON TABLE core.cs_setting_types IS 'Тип настройки';
 

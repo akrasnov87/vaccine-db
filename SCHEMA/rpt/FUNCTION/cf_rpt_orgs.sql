@@ -26,6 +26,6 @@ BEGIN
 END
 $$;
 
-ALTER FUNCTION rpt.cf_rpt_orgs(_f_user integer) OWNER TO mobnius;
+ALTER FUNCTION rpt.cf_rpt_orgs(_f_user integer) OWNER TO vaccine;
 
 COMMENT ON FUNCTION rpt.cf_rpt_orgs(_f_user integer) IS 'Сводный отчет';

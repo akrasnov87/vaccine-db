@@ -16,6 +16,6 @@ BEGIN
 END
 $$;
 
-ALTER FUNCTION core.cf_arm_dd_documents_history(_id uuid) OWNER TO mobnius;
+ALTER FUNCTION core.cf_arm_dd_documents_history(_id uuid) OWNER TO vaccine;
 
 COMMENT ON FUNCTION core.cf_arm_dd_documents_history(_id uuid) IS 'История изменения документа';

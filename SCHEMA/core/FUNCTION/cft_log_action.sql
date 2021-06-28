@@ -27,6 +27,6 @@ EXCEPTION
 END;
 $$;
 
-ALTER FUNCTION core.cft_log_action() OWNER TO mobnius;
+ALTER FUNCTION core.cft_log_action() OWNER TO vaccine;
 
 COMMENT ON FUNCTION core.cft_log_action() IS 'Триггер. Процедура логирования действия пользователя';

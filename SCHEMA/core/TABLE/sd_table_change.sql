@@ -5,7 +5,7 @@ CREATE TABLE core.sd_table_change (
 	id bigint DEFAULT nextval('core.sd_table_change_id_seq'::regclass) NOT NULL
 );
 
-ALTER TABLE core.sd_table_change OWNER TO mobnius;
+ALTER TABLE core.sd_table_change OWNER TO vaccine;
 
 COMMENT ON TABLE core.sd_table_change IS 'Изменение состояния таблицы';
 

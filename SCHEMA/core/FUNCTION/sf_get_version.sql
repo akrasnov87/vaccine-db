@@ -12,6 +12,6 @@ BEGIN
 END
 $$;
 
-ALTER FUNCTION core.sf_get_version() OWNER TO mobnius;
+ALTER FUNCTION core.sf_get_version() OWNER TO vaccine;
 
 COMMENT ON FUNCTION core.sf_get_version() IS 'Версия БД';

@@ -5,4 +5,4 @@ CREATE SEQUENCE core.auto_id_cs_setting_types
 	NO MINVALUE
 	CACHE 1;
 
-ALTER SEQUENCE core.auto_id_cs_setting_types OWNER TO mobnius;
+ALTER SEQUENCE core.auto_id_cs_setting_types OWNER TO vaccine;

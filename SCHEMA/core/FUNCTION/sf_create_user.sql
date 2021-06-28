@@ -22,6 +22,6 @@ BEGIN
 END
 $$;
 
-ALTER FUNCTION core.sf_create_user(_login text, _c_first_name text, _password text, _claims text, _c_description text) OWNER TO mobnius;
+ALTER FUNCTION core.sf_create_user(_login text, _c_first_name text, _password text, _claims text, _c_description text) OWNER TO vaccine;
 
 COMMENT ON FUNCTION core.sf_create_user(_login text, _c_first_name text, _password text, _claims text, _c_description text) IS 'Создание пользователя с определенными ролями';

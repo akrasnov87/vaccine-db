@@ -14,6 +14,6 @@ CREATE VIEW core.pv_users AS
    FROM core.pd_users u
   WHERE (u.sn_delete = false);
 
-ALTER VIEW core.pv_users OWNER TO mobnius;
+ALTER VIEW core.pv_users OWNER TO vaccine;
 
 COMMENT ON VIEW core.pv_users IS 'Открытый список пользователей';

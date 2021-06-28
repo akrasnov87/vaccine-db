@@ -11,6 +11,6 @@ var birthday = '2021-01-17';
 	return newVersion;
 $$;
 
-ALTER FUNCTION core.sf_build_version(status integer) OWNER TO mobnius;
+ALTER FUNCTION core.sf_build_version(status integer) OWNER TO vaccine;
 
 COMMENT ON FUNCTION core.sf_build_version(status integer) IS 'Генерация версии БД';

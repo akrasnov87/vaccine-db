@@ -9,7 +9,8 @@ CREATE TABLE core.dd_documents (
 	c_tag text,
 	sn_delete boolean NOT NULL,
 	dx_created timestamp with time zone DEFAULT now(),
-	b_ignore boolean NOT NULL
+	b_ignore boolean DEFAULT false NOT NULL,
+	b_vaccine boolean DEFAULT false NOT NULL
 );
 
 ALTER TABLE core.dd_documents OWNER TO vaccine;
@@ -29,6 +30,10 @@ COMMENT ON COLUMN core.dd_documents.c_notice IS 'Примечание';
 COMMENT ON COLUMN core.dd_documents.f_user IS 'Идентификатор муниципалитета';
 
 COMMENT ON COLUMN core.dd_documents.dx_created IS 'Дата создания';
+
+COMMENT ON COLUMN core.dd_documents.b_ignore IS 'Медотвод или противопоказание';
+
+COMMENT ON COLUMN core.dd_documents.b_vaccine IS 'Вакцинация, но сертификата нет';
 
 --------------------------------------------------------------------------------
 

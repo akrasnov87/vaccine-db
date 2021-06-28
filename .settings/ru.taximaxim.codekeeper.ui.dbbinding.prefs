@@ -3,5 +3,5 @@
 >>>>>>>=branch 'master' of http\://git/vote/db-release.git
 eclipse.preferences.version=1
 nameOfBoundDatabase=
-prefLastDbStore=postgres@34.122.9.109/vaccine-release-db
+prefLastDbStore=postgres@34.134.26.33/vaccine-release-db
 prefLastDbStoreEditor=postgres@34.122.9.109/vaccine-release-db

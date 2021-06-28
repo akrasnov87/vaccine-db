@@ -9,8 +9,7 @@ CREATE TABLE core.dd_documents (
 	c_tag text,
 	sn_delete boolean NOT NULL,
 	dx_created timestamp with time zone DEFAULT now(),
-	b_ignore boolean DEFAULT false NOT NULL,
-	b_vaccine boolean DEFAULT false NOT NULL
+	f_status integer NOT NULL
 );
 
 ALTER TABLE core.dd_documents OWNER TO vaccine;
@@ -31,13 +30,13 @@ COMMENT ON COLUMN core.dd_documents.f_user IS 'Идентификатор мун
 
 COMMENT ON COLUMN core.dd_documents.dx_created IS 'Дата создания';
 
-COMMENT ON COLUMN core.dd_documents.b_ignore IS 'Медотвод или противопоказание';
-
-COMMENT ON COLUMN core.dd_documents.b_vaccine IS 'Вакцинация, но сертификата нет';
-
 --------------------------------------------------------------------------------
 
 CREATE INDEX dd_documents_f_user_idx ON core.dd_documents USING btree (f_user);
+
+--------------------------------------------------------------------------------
+
+CREATE INDEX dd_documents_f_user_f_status_idx ON core.dd_documents USING btree (f_user, f_status);
 
 --------------------------------------------------------------------------------
 
@@ -55,3 +54,8 @@ ALTER TABLE core.dd_documents
 
 ALTER TABLE core.dd_documents
 	ADD CONSTRAINT dd_documnets_f_user_fkey FOREIGN KEY (f_user) REFERENCES core.pd_users(id) NOT VALID;
+
+--------------------------------------------------------------------------------
+
+ALTER TABLE core.dd_documents
+	ADD CONSTRAINT dd_documnets_f_status_fkey FOREIGN KEY (f_status) REFERENCES core.cs_document_status(id) NOT VALID;

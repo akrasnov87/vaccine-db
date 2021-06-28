@@ -24,7 +24,7 @@ COMMENT ON COLUMN core.dd_files.d_date IS 'Дата справки, вакцин
 
 --------------------------------------------------------------------------------
 
-CREATE INDEX dd_files_f_document_fkey ON core.dd_files USING btree (f_document);
+CREATE INDEX dd_files_f_document_c_type_idx ON core.dd_files USING btree (f_document, c_type);
 
 --------------------------------------------------------------------------------
 

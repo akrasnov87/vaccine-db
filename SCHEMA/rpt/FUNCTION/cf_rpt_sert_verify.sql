@@ -7,7 +7,14 @@ CREATE OR REPLACE FUNCTION rpt.cf_rpt_sert_verify(_f_user integer) RETURNS TABLE
 * @example
 * [{ "action": "cf_rpt_sert_verify", "method": "Select", "data": [{ "params": [_f_user] }], "type": "rpc", "tid": 0 }]
 */
+DECLARE
+	_c_role text;
 BEGIN
+	select r.c_name into _c_role from core.pd_userinroles as uir
+	inner join core.pd_users as u on uir.f_user = u.id
+	inner join core.pd_roles as r on r.id = uir.f_role
+	where u.id = _f_user;
+	
 	return query
 	select 
 		d.id,
@@ -32,11 +39,11 @@ BEGIN
            FROM core.dd_documents d
              JOIN core.pd_users u ON u.id = d.f_user
              LEFT JOIN core.dd_files f ON d.id = f.f_document AND f.sn_delete = false
-          WHERE u.b_disabled = false AND u.sn_delete = false AND d.sn_delete = false) i
+          WHERE case when _c_role = 'admin' then u.f_parent = _f_user else u.id = _f_user end and u.b_disabled = false AND u.sn_delete = false AND d.sn_delete = false and f.c_type = 'sert') i
   GROUP BY i.f_user, i.f_document
   ORDER BY (max(i.dx_created))) as t
   inner join core.dd_documents as d on t.f_document = d.id
-  where t.b_verify = false and case when _f_user = -1 then true else _f_user = d.f_user end;
+  where t.b_verify = false;
 END
 $$;
 

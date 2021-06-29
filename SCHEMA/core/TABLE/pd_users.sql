@@ -9,7 +9,8 @@ CREATE TABLE core.pd_users (
 	b_disabled boolean DEFAULT false NOT NULL,
 	sn_delete boolean DEFAULT false NOT NULL,
 	c_email text,
-	n_count integer DEFAULT 0
+	n_count integer DEFAULT 0,
+	f_parent integer
 );
 
 ALTER TABLE core.pd_users OWNER TO vaccine;
@@ -36,9 +37,15 @@ COMMENT ON COLUMN core.pd_users.sn_delete IS 'Удален';
 
 COMMENT ON COLUMN core.pd_users.c_email IS 'Эл. почта';
 
+COMMENT ON COLUMN core.pd_users.f_parent IS 'Родительская запись';
+
 --------------------------------------------------------------------------------
 
 CREATE INDEX pd_users_b_disabled_sn_delete_idx ON core.pd_users USING btree (b_disabled, sn_delete);
+
+--------------------------------------------------------------------------------
+
+CREATE INDEX pd_users_f_parent_idx ON core.pd_users USING btree (f_parent);
 
 --------------------------------------------------------------------------------
 

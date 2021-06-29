@@ -10,7 +10,8 @@ CREATE TABLE core.pd_users (
 	sn_delete boolean DEFAULT false NOT NULL,
 	c_email text,
 	n_count integer DEFAULT 0,
-	f_parent integer
+	f_parent integer,
+	d_expired_date date
 );
 
 ALTER TABLE core.pd_users OWNER TO vaccine;

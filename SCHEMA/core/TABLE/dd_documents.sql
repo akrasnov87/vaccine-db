@@ -9,7 +9,7 @@ CREATE TABLE core.dd_documents (
 	c_tag text,
 	sn_delete boolean NOT NULL,
 	dx_created timestamp with time zone DEFAULT now(),
-	f_status integer NOT NULL
+	f_status integer
 );
 
 ALTER TABLE core.dd_documents OWNER TO vaccine;

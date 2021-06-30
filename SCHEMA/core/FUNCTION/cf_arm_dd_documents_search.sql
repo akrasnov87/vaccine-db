@@ -18,8 +18,8 @@ BEGIN
 	    d.sn_delete,
 		d.c_tag
 	from core.dd_documents as d
-	where d.f_user = _f_user and d.c_first_name ilike '%'||_txt||'%' or d.c_last_name ilike '%'||_txt||'%' or d.c_middle_name ilike '%'||_txt||'%'
-	or d.c_notice ilike '%'||_txt||'%' and d.sn_delete = false
+	where d.f_user = _f_user and (d.c_first_name ilike '%'||_txt||'%' or d.c_last_name ilike '%'||_txt||'%' or d.c_middle_name ilike '%'||_txt||'%'
+	or d.c_notice ilike '%'||_txt||'%' and d.sn_delete = false)
 	order by d.dx_created desc;
 END
 $$;

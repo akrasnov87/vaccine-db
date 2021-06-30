@@ -9,7 +9,8 @@ CREATE TABLE core.dd_documents (
 	c_tag text,
 	sn_delete boolean NOT NULL,
 	dx_created timestamp with time zone DEFAULT now(),
-	f_status integer
+	f_status integer,
+	d_expired_date date
 );
 
 ALTER TABLE core.dd_documents OWNER TO vaccine;
@@ -29,6 +30,8 @@ COMMENT ON COLUMN core.dd_documents.c_notice IS 'Примечание';
 COMMENT ON COLUMN core.dd_documents.f_user IS 'Идентификатор муниципалитета';
 
 COMMENT ON COLUMN core.dd_documents.dx_created IS 'Дата создания';
+
+COMMENT ON COLUMN core.dd_documents.d_expired_date IS 'Дата истечения срока давности';
 
 --------------------------------------------------------------------------------
 

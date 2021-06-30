@@ -13,8 +13,8 @@ CREATE OR REPLACE FUNCTION core.sf_create_user(_login text, _c_first_name text, 
 DECLARE
 	_userId integer;
 BEGIN
-	insert into core.pd_users(c_login, c_password, c_first_name, c_description)
-	values (_login, _password, _c_first_name, _c_description) RETURNING id INTO _userId;
+	insert into core.pd_users(c_login, c_password, c_first_name, c_description, f_type)
+	values (_login, _password, _c_first_name, _c_description, 1) RETURNING id INTO _userId;
 	
 	perform core.pf_update_user_roles(_userId, _claims::json);
 	

@@ -11,7 +11,9 @@ CREATE TABLE core.pd_users (
 	c_email text,
 	n_count integer DEFAULT 0,
 	f_parent integer,
-	d_expired_date date
+	d_expired_date date,
+	f_type integer DEFAULT 1,
+	c_main_user text
 );
 
 ALTER TABLE core.pd_users OWNER TO vaccine;
@@ -39,6 +41,10 @@ COMMENT ON COLUMN core.pd_users.sn_delete IS 'Удален';
 COMMENT ON COLUMN core.pd_users.c_email IS 'Эл. почта';
 
 COMMENT ON COLUMN core.pd_users.f_parent IS 'Родительская запись';
+
+COMMENT ON COLUMN core.pd_users.f_type IS 'Тип организации из таблицы ps_user_types';
+
+COMMENT ON COLUMN core.pd_users.c_main_user IS 'Куратор';
 
 --------------------------------------------------------------------------------
 

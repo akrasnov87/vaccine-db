@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_sert_verify(_f_user integer) RETURNS TABLE(id uuid, c_name text, d_birthday date, c_verify text, d_date date)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_sert_verify(_f_user integer) RETURNS TABLE(id uuid, c_first_name text, c_name text, d_birthday date, c_verify text, d_date date)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -18,17 +18,20 @@ BEGIN
 	return query
 	select 
 		d.id,
+		t.c_first_name,
 		concat(d.c_first_name, ' ', d.c_last_name, ' ', d.c_middle_name) as c_name,
 		d.d_birthday,
-		case when t.b_verify then 'Достоверный' else 'Неподтверждён' end,
+		case when t.b_verify then 'Достоверный' else 'Не подтверждено' end,
 		t.dx_created::date
 	from (SELECT i.f_user,
     i.f_document,
+		  max(i.c_first_name) as c_first_name,
     max(i.d_date) AS d_date,
 	max(i.dx_created) AS dx_created,
     max(i.b_verify) = 1 AS b_verify
    FROM ( SELECT d.id AS f_document,
             u.id AS f_user,
+		 	u.c_first_name as c_first_name,
             f.dx_created,
 		 	f.d_date,
             row_number() OVER (PARTITION BY d.id ORDER BY f.dx_created DESC) AS n_row,

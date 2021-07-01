@@ -15,25 +15,46 @@ BEGIN
 	inner join core.pd_roles as r on r.id = uir.f_role
 	where u.id = _f_user;
 	
+	IF _c_role = 'admin' THEN
+	
+		return query 
+		select
+			sum(ms.n_sert),
+			avg(ms.n_sert_percent),
+			sum(ms.n_vaccine),
+			avg(ms.n_vaccine_percent),
+			sum(ms.n_pcr),
+			avg(ms.n_pcr_percent),
+			sum(ms.n_pcr7),
+			avg(ms.n_pcr7_percent),
+			sum(ms.n_med),
+			avg(ms.n_med_percent),
+			ms.dx_created
+		from rpt.dd_main_stat as ms
+		inner join core.pd_users as u on u.id = ms.f_user
+		where case when _f_user = -1 then true else (case when _c_role = 'admin' then u.f_parent = _f_user else u.id = _f_user end) end
+		group by ms.dx_created
+		order by ms.dx_created;
+	ELSE
 	return query 
-	select * from (select
-		sum(ms.n_sert),
-		avg(ms.n_sert_percent),
-		sum(ms.n_vaccine),
-		avg(ms.n_vaccine_percent),
-		sum(ms.n_pcr),
-		avg(ms.n_pcr_percent),
-		sum(ms.n_pcr7),
-		avg(ms.n_pcr7_percent),
-		sum(ms.n_med),
-		avg(ms.n_med_percent),
-		ms.dx_created
-	from rpt.dd_main_stat as ms
-	inner join core.pd_users as u on u.id = ms.f_user
-	where case when _f_user = -1 then true else (case when _c_role = 'admin' then u.f_parent = _f_user else u.id = _f_user end) end
-	group by ms.f_user, ms.dx_created
-	order by ms.dx_created desc
-	limit 60) as t order by t.dx_created asc;
+		select
+			sum(ms.n_sert),
+			avg(ms.n_sert_percent),
+			sum(ms.n_vaccine),
+			avg(ms.n_vaccine_percent),
+			sum(ms.n_pcr),
+			avg(ms.n_pcr_percent),
+			sum(ms.n_pcr7),
+			avg(ms.n_pcr7_percent),
+			sum(ms.n_med),
+			avg(ms.n_med_percent),
+			ms.dx_created
+		from rpt.dd_main_stat as ms
+		inner join core.pd_users as u on u.id = ms.f_user
+		where case when _f_user = -1 then true else (case when _c_role = 'admin' then u.f_parent = _f_user else u.id = _f_user end) end
+		group by ms.f_user, ms.dx_created
+		order by ms.dx_created;
+	END IF;
 END
 $$;
 

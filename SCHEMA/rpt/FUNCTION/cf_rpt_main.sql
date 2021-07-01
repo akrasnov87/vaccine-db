@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_main(_f_user integer) RETURNS TABLE(n_sert_percent numeric, n_vaccine_percent numeric, n_pcr_percent numeric, n_pcr7_percent numeric, n_med_percent numeric, dx_created date)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_main(_f_user integer) RETURNS TABLE(n_sert bigint, n_sert_percent numeric, n_vaccine bigint, n_vaccine_percent numeric, n_pcr bigint, n_pcr_percent numeric, n_pcr7 bigint, n_pcr7_percent numeric, n_med bigint, n_med_percent numeric, dx_created date)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -16,18 +16,24 @@ BEGIN
 	where u.id = _f_user;
 	
 	return query 
-	select
+	select * from (select
+		sum(ms.n_sert),
 		avg(ms.n_sert_percent),
+		sum(ms.n_vaccine),
 		avg(ms.n_vaccine_percent),
+		sum(ms.n_pcr),
 		avg(ms.n_pcr_percent),
+		sum(ms.n_pcr7),
 		avg(ms.n_pcr7_percent),
+		sum(ms.n_med),
 		avg(ms.n_med_percent),
 		ms.dx_created
 	from rpt.dd_main_stat as ms
 	inner join core.pd_users as u on u.id = ms.f_user
 	where case when _f_user = -1 then true else (case when _c_role = 'admin' then u.f_parent = _f_user else u.id = _f_user end) end
 	group by ms.f_user, ms.dx_created
-	order by ms.dx_created;
+	order by ms.dx_created desc
+	limit 60) as t order by t.dx_created asc;
 END
 $$;
 

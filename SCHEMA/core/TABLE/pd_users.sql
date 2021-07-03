@@ -13,7 +13,8 @@ CREATE TABLE core.pd_users (
 	f_parent integer,
 	d_expired_date date,
 	f_type integer DEFAULT 1,
-	c_main_user text
+	c_main_user text,
+	c_version text
 );
 
 ALTER TABLE core.pd_users OWNER TO vaccine;

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_orgs(_f_user integer) RETURNS TABLE(id integer, c_name text, c_main_user text, c_description text, n_count integer, n_sert bigint, n_sert_percent numeric, n_vaccine bigint, n_vaccine_percent numeric, n_pcr bigint, n_pcr_percent numeric, n_pcr7 bigint, n_pcr7_percent numeric, n_med bigint, n_med_percent numeric)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_orgs(_f_user integer, _d_date_end date = (now())::date) RETURNS TABLE(id integer, c_name text, c_main_user text, c_description text, n_count integer, n_sert bigint, n_sert_prev bigint, n_sert_percent numeric, n_vaccine bigint, n_vaccine_prev bigint, n_vaccine_percent numeric, n_pcr bigint, n_pcr_prev bigint, n_pcr_percent numeric, n_pcr7 bigint, n_pcr7_prev bigint, n_pcr7_percent numeric, n_med bigint, n_med_prev bigint, n_med_percent numeric, d_date_end date)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -15,6 +15,13 @@ BEGIN
 	inner join core.pd_roles as r on r.id = uir.f_role
 	where u.id = _f_user;
 	
+	if _d_date_end is null then
+		_d_date_end = now()::date;
+	end if;
+	
+	
+	--raise notice '%', _d_date_end - '1 day'::interval;
+
 	return query
 	with stat as(
 		SELECT i.f_user,
@@ -29,32 +36,55 @@ BEGIN
 			   and d.f_status = 3 and d.sn_delete = false and u.b_disabled = false AND u.sn_delete = false) i
 	GROUP BY i.f_user, i.f_document
 	ORDER BY (max(i.d_date)))
-	select 
+	select
+		t.id,
+		t.c_first_name,
+		t.c_main_user,
+		t.c_name,
+		t.n_count,
+		t.n_sert,
+		t.n_sert - (select ms.n_sert from rpt.dd_main_stat as ms where ms.f_user = t.id and ms.dx_created = _d_date_end - '1 day'::interval) as n_sert_prev,
+		t.n_sert_percent,
+		t.n_vaccine,
+		t.n_vaccine - (select ms.n_vaccine from rpt.dd_main_stat as ms where ms.f_user = t.id and ms.dx_created = _d_date_end - '1 day'::interval) as n_vaccine_prev,
+		t.n_vaccine_percent,
+		t.n_pcr,
+		t.n_pcr - (select ms.n_pcr from rpt.dd_main_stat as ms where ms.f_user = t.id and ms.dx_created = _d_date_end - '1 day'::interval) as n_pcr_prev,
+		t.n_pcr_percent,
+		t.n_pcr7,
+		t.n_pcr7 - (select ms.n_pcr7 from rpt.dd_main_stat as ms where ms.f_user = t.id and ms.dx_created = _d_date_end - '1 day'::interval) as n_pcr7_prev,
+		t.n_pcr7_percent,
+		t.n_med,
+		t.n_med - (select ms.n_med from rpt.dd_main_stat as ms where ms.f_user = t.id and ms.dx_created = _d_date_end - '1 day'::interval) as n_med_prev,
+		t.n_med_percent,
+		(_d_date_end - '1 day'::interval)::date as d_date_end
+	from (select 
 		u.id,
 		u.c_first_name,
 		u.c_main_user,
 		ut.c_name,
+		u.c_description,
 		u.n_count,
-		(select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 1),
-		sf_percent((select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 1), u.n_count),
-		(select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 2),
-		sf_percent((select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 2), u.n_count),
-		(select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 3),
-		sf_percent((select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 3), u.n_count),
-		(select count(*) from stat as s where s.f_user = u.id and s.n_day > 7),
-		sf_percent((select count(*) from stat as s where s.f_user = u.id and s.n_day > 7), u.n_count),
-		(select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 4),
-		sf_percent((select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 4), u.n_count)
+		(select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 1 and d.sn_delete = false) as n_sert,
+		sf_percent((select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 1 and d.sn_delete = false), u.n_count) as n_sert_percent,
+		(select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 2 and d.sn_delete = false) as n_vaccine,
+		sf_percent((select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 2 and d.sn_delete = false), u.n_count) as n_vaccine_percent,
+		(select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 3 and d.sn_delete = false) as n_pcr,
+		sf_percent((select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 3 and d.sn_delete = false), u.n_count) as n_pcr_percent,
+		(select count(*) from stat as s where s.f_user = u.id and s.n_day > 7) as n_pcr7,
+		sf_percent((select count(*) from stat as s where s.f_user = u.id and s.n_day > 7), u.n_count) as n_pcr7_percent,
+		(select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 4 and d.sn_delete = false) as n_med,
+		sf_percent((select count(*) from core.dd_documents as d where d.f_user = u.id and d.f_status = 4 and d.sn_delete = false), u.n_count) as n_med_percent
 	from core.pd_userinroles as uir
 	inner join core.pd_roles as r on r.id = uir.f_role
 	inner join core.pd_users as u on u.id = uir.f_user
 	inner join core.ps_user_types as ut on ut.id = u.f_type
 	where case when _f_user = -1 then true else (case when _c_role = 'admin' then u.f_parent = _f_user else u.id = _f_user end) end
-	and u.b_disabled = false and u.sn_delete = false and r.c_name = 'user'
-	order by u.c_description, u.c_first_name;
+	and u.b_disabled = false and u.sn_delete = false and r.c_name = 'user') as t
+	order by t.c_description, t.c_first_name;
 END
 $$;
 
-ALTER FUNCTION rpt.cf_rpt_orgs(_f_user integer) OWNER TO vaccine;
+ALTER FUNCTION rpt.cf_rpt_orgs(_f_user integer, _d_date_end date) OWNER TO vaccine;
 
-COMMENT ON FUNCTION rpt.cf_rpt_orgs(_f_user integer) IS 'Сводный отчет';
+COMMENT ON FUNCTION rpt.cf_rpt_orgs(_f_user integer, _d_date_end date) IS 'Сводный отчет';

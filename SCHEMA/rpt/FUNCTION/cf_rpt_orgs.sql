@@ -19,7 +19,6 @@ BEGIN
 		_d_date_end = now()::date;
 	end if;
 	
-	
 	--raise notice '%', _d_date_end - '1 day'::interval;
 
 	return query

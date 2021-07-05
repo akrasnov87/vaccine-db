@@ -15,6 +15,10 @@ BEGIN
 	inner join core.pd_roles as r on r.id = uir.f_role
 	where u.id = _f_user;
 	
+	if _d_date_end is null then
+		_d_date_end = now()::date;
+	end if;
+	
 	return query
 	with stat as(
 		SELECT i.f_user,

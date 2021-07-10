@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_orgs_types(_f_user integer, _d_date_end date = (now())::date) RETURNS TABLE(id integer, f_parent integer, c_name text, n_count bigint, n_sert numeric, n_sert_prev numeric, n_sert_percent numeric, n_vaccine numeric, n_vaccine_prev numeric, n_vaccine_percent numeric, n_pcr numeric, n_pcr_prev numeric, n_pcr_percent numeric, n_pcr7 numeric, n_pcr7_prev numeric, n_pcr7_percent numeric, n_med numeric, n_med_prev numeric, n_med_percent numeric, d_date_end date)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_orgs_types(_f_user integer, _d_date_end date = (now())::date) RETURNS TABLE(id integer, f_parent integer, c_name text, n_count bigint, n_total numeric, n_total_prev numeric, n_total_percent numeric, n_sert numeric, n_sert_prev numeric, n_sert_percent numeric, n_vaccine numeric, n_vaccine_prev numeric, n_vaccine_percent numeric, n_pcr numeric, n_pcr_prev numeric, n_pcr_percent numeric, n_pcr7 numeric, n_pcr7_prev numeric, n_pcr7_percent numeric, n_med numeric, n_med_prev numeric, n_med_percent numeric, d_date_end date)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -14,6 +14,10 @@ BEGIN
 	inner join core.pd_users as u on uir.f_user = u.id
 	inner join core.pd_roles as r on r.id = uir.f_role
 	where u.id = _f_user;
+	
+	if _d_date_end is null then
+		_d_date_end = now()::date;
+	end if;
 	
 	return query
 	with stat as(
@@ -34,6 +38,9 @@ BEGIN
 		t.f_parent,
 		max(t.c_name),
 		sum(t.n_count),
+		sum(t.n_sert) + sum(t.n_vaccine) as n_total,
+		(sum(t.n_sert) - (select ms.n_sert from rpt.dd_main_type_stat as ms where ms.f_type = t.id and ms.f_user = _f_user and ms.dx_created = _d_date_end - '1 day'::interval)) + (sum(t.n_vaccine) - (select ms.n_vaccine from rpt.dd_main_type_stat as ms where ms.f_type = t.id and ms.f_user = _f_user and ms.dx_created = _d_date_end - '1 day'::interval)) as n_total_prev,
+		sf_percent(sum(t.n_sert), sum(t.n_count)) + sf_percent(sum(t.n_vaccine), sum(t.n_count)) as n_total_percent,
 		sum(t.n_sert),
 		sum(t.n_sert) - (select ms.n_sert from rpt.dd_main_type_stat as ms where ms.f_type = t.id and ms.f_user = _f_user and ms.dx_created = _d_date_end - '1 day'::interval) as n_sert_prev,
 		sf_percent(sum(t.n_sert), sum(t.n_count)), 

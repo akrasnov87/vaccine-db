@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_orgs(_f_user integer, _d_date_end date = (now())::date) RETURNS TABLE(id integer, c_name text, c_main_user text, c_description text, n_count integer, n_sert bigint, n_sert_prev bigint, n_sert_percent numeric, n_vaccine bigint, n_vaccine_prev bigint, n_vaccine_percent numeric, n_pcr bigint, n_pcr_prev bigint, n_pcr_percent numeric, n_pcr7 bigint, n_pcr7_prev bigint, n_pcr7_percent numeric, n_med bigint, n_med_prev bigint, n_med_percent numeric, d_date_end date)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_orgs(_f_user integer, _d_date_end date = (now())::date) RETURNS TABLE(id integer, c_name text, c_main_user text, c_description text, n_count integer, n_total bigint, n_total_prev bigint, n_total_percent numeric, n_sert bigint, n_sert_prev bigint, n_sert_percent numeric, n_vaccine bigint, n_vaccine_prev bigint, n_vaccine_percent numeric, n_pcr bigint, n_pcr_prev bigint, n_pcr_percent numeric, n_pcr7 bigint, n_pcr7_prev bigint, n_pcr7_percent numeric, n_med bigint, n_med_prev bigint, n_med_percent numeric, d_date_end date)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -18,7 +18,6 @@ BEGIN
 	if _d_date_end is null then
 		_d_date_end = now()::date;
 	end if;
-	
 	
 	--raise notice '%', _d_date_end - '1 day'::interval;
 
@@ -42,6 +41,9 @@ BEGIN
 		t.c_main_user,
 		t.c_name,
 		t.n_count,
+		(t.n_sert + t.n_vaccine) as n_total,
+		((t.n_sert - (select ms.n_sert from rpt.dd_main_stat as ms where ms.f_user = t.id and ms.dx_created = _d_date_end - '1 day'::interval)) + t.n_vaccine - (select ms.n_vaccine from rpt.dd_main_stat as ms where ms.f_user = t.id and ms.dx_created = _d_date_end - '1 day'::interval)) as n_total_prev,
+		(t.n_sert_percent + t.n_vaccine_percent) as n_total_percent,
 		t.n_sert,
 		t.n_sert - (select ms.n_sert from rpt.dd_main_stat as ms where ms.f_user = t.id and ms.dx_created = _d_date_end - '1 day'::interval) as n_sert_prev,
 		t.n_sert_percent,

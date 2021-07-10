@@ -27,13 +27,13 @@ BEGIN
 
     _d_data  = _d_data - _n_val * '1 day'::interval;
 
-	delete from core.dd_files where dx_created < _d_data;
+	/*delete from core.cd_action_log where dx_created < _d_data;
 	get diagnostics _dg_cnt = row_count;
 	_dg_text = _dg_text || ' core.cd_action_log: удалено '|| _dg_cnt::text || E'\n';
 	
 	delete from core.cd_action_log_user where d_date < _d_data;
 	get diagnostics _dg_cnt = row_count;
-	_dg_text = _dg_text || ' core.cd_action_log_user: удалено '|| _dg_cnt::text || E'\n';
+	_dg_text = _dg_text || ' core.cd_action_log_user: удалено '|| _dg_cnt::text || E'\n';*/
 
 	insert into core.cd_sys_log(d_timestamp, c_descr)
 	values(clock_timestamp(), 'Очистка таблиц выполнена. ' || E'\n' || _dg_text);

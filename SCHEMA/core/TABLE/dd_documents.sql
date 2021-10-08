@@ -10,7 +10,8 @@ CREATE TABLE core.dd_documents (
 	sn_delete boolean NOT NULL,
 	dx_created timestamp with time zone DEFAULT now(),
 	f_status integer,
-	d_expired_date date
+	d_expired_date date,
+	b_vote_09_2021 boolean
 );
 
 ALTER TABLE core.dd_documents OWNER TO vaccine;
@@ -33,6 +34,8 @@ COMMENT ON COLUMN core.dd_documents.dx_created IS 'Дата создания';
 
 COMMENT ON COLUMN core.dd_documents.d_expired_date IS 'Дата истечения срока давности';
 
+COMMENT ON COLUMN core.dd_documents.b_vote_09_2021 IS 'Принял учсатие в голосовании сентябрь 2021';
+
 --------------------------------------------------------------------------------
 
 CREATE INDEX dd_documents_f_user_idx ON core.dd_documents USING btree (f_user);
@@ -40,6 +43,18 @@ CREATE INDEX dd_documents_f_user_idx ON core.dd_documents USING btree (f_user);
 --------------------------------------------------------------------------------
 
 CREATE INDEX dd_documents_f_user_f_status_idx ON core.dd_documents USING btree (f_user, f_status);
+
+--------------------------------------------------------------------------------
+
+CREATE INDEX dd_documents_f_user_sn_delete_b_vote_09_2021_idx ON core.dd_documents USING btree (f_user, sn_delete, b_vote_09_2021);
+
+--------------------------------------------------------------------------------
+
+CREATE INDEX dd_documents_sn_delete ON core.dd_documents USING btree (sn_delete);
+
+--------------------------------------------------------------------------------
+
+CREATE INDEX dd_documents_f_user_sn_delete_idx ON core.dd_documents USING btree (f_user, sn_delete);
 
 --------------------------------------------------------------------------------
 

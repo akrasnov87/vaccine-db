@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_sert_verify(_f_user integer) RETURNS TABLE(id uuid, c_first_name text, c_name text, d_birthday date, c_verify text, d_date date, c_link text)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_sert_verify(_f_user integer) RETURNS TABLE(id uuid, c_first_name text, c_name text, d_birthday date, c_verify text, d_date date, c_link text, c_url text)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -23,7 +23,8 @@ BEGIN
 		d.d_birthday,
 		t.c_notice,
 		t.dx_created::date,
-		concat('https://vaccine-cloud.appcode.pw/release/upload/filebyid?id=', f_file) as c_link
+		concat('https://vaccine-cloud.appcode.pw/release/upload/filebyid?id=', f_file) as c_link,
+		t.c_url
 	from (SELECT i.f_user,
     i.f_document,
 		  max(i.c_first_name) as c_first_name,
@@ -31,13 +32,15 @@ BEGIN
 	max(i.dx_created) AS dx_created,
     max(i.b_verify) = 1 AS b_verify,
     max(i.c_notice) AS c_notice,
-    max(i.f_file) AS f_file
+    max(i.f_file) AS f_file,
+    max(i.c_url) AS c_url
    FROM ( SELECT d.id AS f_document,
             u.id AS f_user,
 		 	u.c_first_name as c_first_name,
             f.dx_created,
 		 	f.d_date,
 		 	f.c_notice,
+		 f.c_url,
 		 f.id as f_file,
             row_number() OVER (PARTITION BY d.id ORDER BY f.dx_created DESC) AS n_row,
 			CASE

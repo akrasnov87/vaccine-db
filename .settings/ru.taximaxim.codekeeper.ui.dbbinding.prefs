@@ -3,6 +3,6 @@
 >>>>>>>=branch 'master' of https\://github.com/akrasnov87/vaccine-db.git
 eclipse.preferences.version=1
 nameOfBoundDatabase=
-prefLastDbStore=postgres@35.209.225.66/vaccine-release-db
+prefLastDbStore=postgres@35.206.109.194/vaccine-release-db
 prefLastDbStoreEditor=postgres@34.122.9.109/vaccine-release-db
 prefLastDirection=true

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_main(_f_user integer, _d_date_start date = NULL::date, _d_date_end date = NULL::date) RETURNS TABLE(n_sert bigint, n_sert_percent numeric, n_vaccine bigint, n_vaccine_percent numeric, n_pcr bigint, n_pcr_percent numeric, n_pcr7 bigint, n_pcr7_percent numeric, n_med bigint, n_med_percent numeric, dx_created date)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_main_vote(_f_user integer, _d_date_start date = NULL::date, _d_date_end date = NULL::date) RETURNS TABLE(n_vote bigint, n_vote_percent numeric, n_vote_loyal bigint, n_vote_loyal_percent numeric, dx_created date)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -21,16 +21,10 @@ BEGIN
 	
 		return query 
 		select
-			sum(ms.n_sert),
-			avg(ms.n_sert_percent),
-			sum(ms.n_vaccine),
-			avg(ms.n_vaccine_percent),
-			sum(ms.n_pcr),
-			avg(ms.n_pcr_percent),
-			sum(ms.n_pcr7),
-			avg(ms.n_pcr7_percent),
-			sum(ms.n_med),
-			avg(ms.n_med_percent),
+			sum(ms.n_vote),
+			avg(ms.n_vote_percent),
+			sum(ms.n_vote_loyal),
+			avg(ms.n_vote_loyal_percent),
 			ms.dx_created
 		from rpt.dd_main_stat as ms
 		inner join core.pd_users as u on u.id = ms.f_user
@@ -44,16 +38,10 @@ BEGIN
 	ELSE
 	return query 
 		select
-			sum(ms.n_sert),
-			avg(ms.n_sert_percent),
-			sum(ms.n_vaccine),
-			avg(ms.n_vaccine_percent),
-			sum(ms.n_pcr),
-			avg(ms.n_pcr_percent),
-			sum(ms.n_pcr7),
-			avg(ms.n_pcr7_percent),
-			sum(ms.n_med),
-			avg(ms.n_med_percent),
+			sum(ms.n_vote),
+			avg(ms.n_vote_percent),
+			sum(ms.n_vote_loyal),
+			avg(ms.n_vote_loyal_percent),
 			ms.dx_created
 		from rpt.dd_main_stat as ms
 		inner join core.pd_users as u on u.id = ms.f_user
@@ -68,6 +56,6 @@ BEGIN
 END
 $$;
 
-ALTER FUNCTION rpt.cf_rpt_main(_f_user integer, _d_date_start date, _d_date_end date) OWNER TO vaccine;
+ALTER FUNCTION rpt.cf_rpt_main_vote(_f_user integer, _d_date_start date, _d_date_end date) OWNER TO vaccine;
 
-COMMENT ON FUNCTION rpt.cf_rpt_main(_f_user integer, _d_date_start date, _d_date_end date) IS 'Главный сводный отчет';
+COMMENT ON FUNCTION rpt.cf_rpt_main_vote(_f_user integer, _d_date_start date, _d_date_end date) IS 'Главный сводный отчет';

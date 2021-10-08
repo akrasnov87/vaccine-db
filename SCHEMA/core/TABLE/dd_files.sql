@@ -8,7 +8,8 @@ CREATE TABLE core.dd_files (
 	c_gosuslugi_key text,
 	c_type text,
 	d_date date,
-	c_notice text
+	c_notice text,
+	c_url text
 );
 
 ALTER TABLE core.dd_files OWNER TO vaccine;

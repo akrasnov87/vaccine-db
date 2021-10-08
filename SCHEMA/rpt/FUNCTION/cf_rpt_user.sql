@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION rpt.cf_rpt_user(_f_user integer) RETURNS TABLE(id uuid, f_user integer, c_name text, d_birthday date, n_sert integer, n_sert_count bigint, d_sert_date date, n_vac integer, n_vac_count bigint, d_vac_date date, n_test integer, n_test_count bigint, d_test_date date, n_day integer, n_med integer, n_med_count bigint, d_expired_date date, f_status integer, c_status text)
+CREATE OR REPLACE FUNCTION rpt.cf_rpt_user(_f_user integer) RETURNS TABLE(id uuid, f_user integer, c_name text, d_birthday date, n_sert integer, n_sert_count bigint, d_sert_date date, n_vac integer, n_vac_count bigint, d_vac_date date, n_test integer, n_test_count bigint, d_test_date date, n_day integer, n_med integer, n_med_count bigint, d_expired_date date, f_status integer, c_status text, n_vote_09_2021 integer)
     LANGUAGE plpgsql STABLE
     AS $$
 /**
@@ -48,7 +48,8 @@ BEGIN
 		(select count(*) from core.dd_files as f where f.f_document = d.id and f.c_type = 'med' and f.sn_delete = false),
 		case when d.f_status = 4 then d.d_expired_date else null end,
 		d.f_status,
-		ds.c_name
+		ds.c_name,
+		case when d.b_vote_09_2021 is not null and d.b_vote_09_2021 = true then 1 else 0 end
 	from core.dd_documents as d
 	inner join core.pd_users as u on d.f_user = u.id
 	inner join core.cs_document_status as ds on ds.id = d.f_status

@@ -12,7 +12,13 @@ CREATE TABLE rpt.dd_main_type_stat (
 	n_med integer,
 	n_med_percent numeric,
 	dx_created date DEFAULT (now())::date,
-	f_type integer
+	f_type integer,
+	n_vote_09_2021 integer,
+	n_vote_09_2021_percent numeric,
+	n_vote_loyal integer,
+	n_vote_loyal_percent numeric,
+	n_vote integer,
+	n_vote_percent numeric
 );
 
 ALTER TABLE rpt.dd_main_type_stat ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
